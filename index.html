@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>todo-List</title>
+</head>
+<body>
+	<input id="input-item" type="text"/>
+	<button id="add-btn">Add</button><br><br>
+	<button onclick="document.location = './item.html'">Link items</button>
+	<ul id="todo-list">
+	</ul> 
+<!-- internall Script -->
+	<!-- external Script: file o ngoai -->
+	<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+	<script type="text/javascript">
+		var url = 'http://localhost:3000/todos';
+		var todoList;
+		axios.get(url).then(function(res){
+			todoList = res.data;
+			render(todoList);
+		});
+
+		var htmlList = document.getElementById("todo-list");
+		var addbtn = document.getElementById("add-btn");
+			addbtn.addEventListener("click", addItem);
+
+		function addItem(){
+			var inputItem = document.getElementById("input-item");
+			var value = { content: inputItem.value};
+			
+			axios.post(url, value).then(function(res){
+				todoList.push(res.data);
+				render(todoList);
+			})
+
+			render(todoList);
+			inputItem.value = "";
+
+		};
+
+
+		function render(array){
+		var content = array.map(function(item){
+			var i = todoList.indexOf(item) + 1;
+			return '<li>' + item.content + '<button onclick="document.location =' + "'./edit-item.html#" + i + "'" + '"' + '> Edit Item </button></li>';
+		});
+		htmlList.innerHTML = content.join("");
+		};
+
+//new item html. create a link to show the list
+// create a link edit item, 
+	</script>
+</body>
+</html>

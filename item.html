@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>The new Items</title>
+</head>
+
+<body>
+	<button onclick="document.location = './'">HOME</button>
+	<ul id='todo-list'>
+		
+	</ul>
+
+	<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+	<script type="text/javascript">
+	var url = 'http://localhost:3000/todos';
+		var todoList;
+
+		axios.get(url).then(function(res){
+			todoList = res.data;
+			render(todoList);
+		});	
+
+		function render(array){
+		var htmlList = document.getElementById("todo-list");
+		var content = array.map(function(item){
+			return '<li>' + item.content + '</li>';
+		});
+		htmlList.innerHTML = content.join("");
+		};
+	</script>
+</body>
+</html>
